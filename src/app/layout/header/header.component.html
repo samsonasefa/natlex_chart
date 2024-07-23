@@ -1,0 +1,28 @@
+<header>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>Natlex-chart</span>
+      <span class="spacer"></span>
+      <nav
+        [ngClass]="{
+          isCollapsed: isCollapsed
+        }"
+      >
+        <a style="font-size: medium" mat-button routerLink="/view-mode"
+          >View Mode</a
+        >
+        <a style="font-size: medium" mat-button routerLink="/settings"
+          >Settings</a
+        >
+      </nav>
+      <button
+        mat-icon-button
+        class="menu-toggle"
+        aria-label="Example icon-button with menu icon"
+        (click)="toggleMenu()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</header>
