@@ -1,0 +1,36 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+nav {
+  a {
+    color: white;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+}
+
+.menu-toggle {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  nav {
+    display: none;
+  }
+  nav.isCollapsed {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: var(--mat-toolbar-mobile-height);
+    right: 0;
+    background: var(--mat-toolbar-container-background-color);
+    width: 100%;
+    & a {
+      margin-left: 30px;
+    }
+  }
+  .menu-toggle {
+    display: block;
+  }
+}
