@@ -1,3 +1,19 @@
 <p>view-mode works!</p>
 
-<app-line-chart></app-line-chart>
+<!-- <app-line-chart></app-line-chart> -->
+
+<button (click)="Add()">Add</button>
+
+<button (click)="Reset()">Reset</button>
+
+<h5>the list of charts</h5>
+
+@for (chart of (chartConfigs | async)!; track chart) {
+<div>
+  <li [style.text-decoration]="chart.hide ? 'line-through' : ''">
+    {{ chart.title }}
+  </li>
+  <button (click)="Hide(chart.id, !chart.hide)">Hide</button>
+  <button (click)="Remove(chart.id)">Remove</button>
+</div>
+}
