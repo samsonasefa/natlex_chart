@@ -1,0 +1,92 @@
+$breakpoints: (
+  // mobiles
+  "mb":
+    (
+      "min": 0px,
+      "max": 600px,
+    ),
+  // tabs and large mobiles
+  "tb":
+    (
+      "min": 601px,
+      "max": 1024px,
+    ),
+  // normal laptop screens
+  "sm":
+    (
+      "min": 1025px,
+      "max": 1280px,
+    ),
+  // large screens laptop and desktop screens
+  "lg":
+    (
+      "min": 1281px,
+      "max": 1600px,
+    ),
+  // very large screens
+  "xl":
+    (
+      "min": 1601px,
+      "max": 999999999px,
+    )
+) !default;
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $min-width: map-get(map-get($breakpoints, $breakpoint), "min");
+    $max-width: map-get(map-get($breakpoints, $breakpoint), "max");
+    @media (min-width: #{$min-width}) and (max-width: #{$max-width}) {
+      @content;
+    }
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  padding: var(--spacing-8);
+  gap: var(--spacing-8);
+
+  .container {
+    width: 12rem;
+    & .menu-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      padding: 0px;
+      margin: 0px;
+    }
+  }
+
+  @include respond-to("mb") {
+    gap: var(--spacing-4);
+    padding: var(--spacing-4);
+    .container {
+      width: 10rem;
+    }
+  }
+  @include respond-to("tb") {
+    gap: var(--spacing-4);
+    padding: var(--spacing-4);
+    .container {
+      width: 10rem;
+    }
+  }
+  @include respond-to("sm") {
+    gap: var(--spacing-4);
+    .container {
+      width: 10rem;
+      color: lightgreen;
+    }
+  }
+  @include respond-to("lg") {
+    .container {
+      color: coral;
+    }
+  }
+  @include respond-to("xl") {
+    .container {
+      color: dodgerblue;
+    }
+  }
+}
