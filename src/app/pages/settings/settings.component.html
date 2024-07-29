@@ -20,6 +20,16 @@
       </mat-card-content>
     </mat-card>
   </div>
+  } @if(((chartConfigs | async)?.length??0) < 4 ){
+  <div class="container">
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <div class="add-placeholder flex-center">
+          <mat-icon>add</mat-icon>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
   }
 </section>
 

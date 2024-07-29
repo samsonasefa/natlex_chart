@@ -58,6 +58,15 @@ $breakpoints: (
     }
   }
 
+  .add-placeholder {
+    border: 1px gray dashed;
+    mat-icon {
+      width: var(--spacing-16);
+      height: var(--spacing-16);
+      font-size: var(--spacing-16, 4rem);
+    }
+  }
+
   @include respond-to("mb") {
     gap: var(--spacing-4);
     padding: var(--spacing-4);
