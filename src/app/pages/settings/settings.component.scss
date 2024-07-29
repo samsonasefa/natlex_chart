@@ -58,6 +58,10 @@ $breakpoints: (
     }
   }
 
+  .hidden {
+    color: gray;
+  }
+
   .add-placeholder {
     border: 1px gray dashed;
     mat-icon {
