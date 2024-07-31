@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconRegistry, MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { Observable } from 'rxjs';
@@ -9,7 +9,10 @@ import { Store } from '@ngrx/store';
 import { selectCharts } from '../../state/charts.selectors';
 import { CommonModule } from '@angular/common';
 import { ChartsActions } from '../../state/charts.actions';
-import { ChartType } from '../../constants/options';
+import { ChartSettingModalService } from '../../modal/chart-setting-modal/chart-setting-modal.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmModalComponent } from '../../modal/confirm-modal/confirm-modal.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-settings',
@@ -21,6 +24,7 @@ import { ChartType } from '../../constants/options';
     MatButtonModule,
     MatMenuModule,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
 })
@@ -30,34 +34,47 @@ export class SettingsComponent {
   pointer = 0;
   removedChart = [];
 
-  constructor(private store: Store) {
+  constructor(
+    private store: Store,
+    private chartModalSvc: ChartSettingModalService,
+    private confirmDialog: MatDialog,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer
+  ) {
     this.chartConfigs = this.store.select(selectCharts);
+    /**
+     * adding custome svg icons
+     */
+    iconRegistry.addSvgIcon(
+      'map_chart',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/svg/map_chart.svg')
+    );
+    iconRegistry.addSvgIcon(
+      'gantt_chart',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/svg/gantt_chart.svg')
+    );
   }
 
   /**
    * A function to trigger add chart
    */
   onAdd(): void {
-    // todo open add modal
-    // on return submit
-    // in the future it will open a modal
-
-    if (this.pointer >= this.ChartSamples.length) {
-      // dont add new chart object if it reach its max
-      return;
-    }
-    this.store.dispatch(
-      ChartsActions.addChart({
-        chart: {
-          id: this.ChartSamples[this.pointer],
-          title: `${this.ChartSamples[this.pointer]} chart`,
-          type: this.ChartSamples[this.pointer] as ChartType,
-          hide: false,
-        },
-      })
-    );
-    // move pointer to next
-    this.pointer = this.pointer + 1;
+    this.chartModalSvc.open({ mode: 'add' }).subscribe(async (data) => {
+      console.log(' the data ', data);
+      // todo validate if the exact chart is exist
+      if (data?.title && data?.type) {
+        this.store.dispatch(
+          ChartsActions.addChart({
+            chart: {
+              id: `${new Date().getTime()}`,
+              title: data.title,
+              type: data.type,
+              hide: false,
+            },
+          })
+        );
+      }
+    });
   }
 
   /**
@@ -72,26 +89,41 @@ export class SettingsComponent {
   /**
    * A function to trigger edit chart
    */
-  onEdit(): void {
-    // open edit modal
-    // on return submit / save
+  onEdit(chart: Chart): void {
+    this.chartModalSvc
+      .open({ mode: 'edit', ...chart })
+      .subscribe(async (data) => {
+        console.log(' the data -> ', data);
+        // todo validate if the exact chart is exist
+        if (data?.title && data?.type) {
+          this.store.dispatch(
+            ChartsActions.editChart({
+              chart: {
+                id: chart.id,
+                title: data.title,
+                type: data.type,
+                hide: false,
+              },
+            })
+          );
+        }
+      });
   }
 
   /**
    * A function to trigger delete chart
    */
-  onDelete() {
-    // open 'are you sure' modal
-    // on return save
+  onDelete(chart: Chart) {
+    this.confirmDialog
+      .open<ConfirmModalComponent>(ConfirmModalComponent, {
+        hasBackdrop: true,
+        data: chart,
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) {
+          this.store.dispatch(ChartsActions.removeChart({ id: chart.id }));
+        }
+      });
   }
-
-  /**
-   * A function responsible to delete chart
-   * @param id chart id to be removed
-   */
-  Remove(id: string): void {
-    this.store.dispatch(ChartsActions.removeChart({ id }));
-  }
-
-  // TODO reset to load default chart
 }
