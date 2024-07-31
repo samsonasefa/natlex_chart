@@ -1,19 +1,28 @@
-<p>view-mode works!</p>
+<section class="charts">
+  @for (chart of (chartConfigs | async)!; track chart) { @switch (chart.type) {
+  @case ('line') {
 
-<!-- <app-line-chart></app-line-chart> -->
+  <section class="chart-container">
+    <app-line-chart></app-line-chart>
+  </section>
 
-<button (click)="Add()">Add</button>
+  } @case ("candlestick") {
 
-<button (click)="Reset()">Reset</button>
+  <section class="chart-container">
+    <app-stock-chart></app-stock-chart>
+  </section>
 
-<h5>the list of charts</h5>
+  } @case ("map") {
 
-@for (chart of (chartConfigs | async)!; track chart) {
-<div>
-  <li [style.text-decoration]="chart.hide ? 'line-through' : ''">
-    {{ chart.title }}
-  </li>
-  <button (click)="Hide(chart.id, !chart.hide)">Hide</button>
-  <button (click)="Remove(chart.id)">Remove</button>
-</div>
-}
+  <section class="chart-container">
+    <app-map-chart></app-map-chart>
+  </section>
+
+  } @case ("gantt") {
+
+  <section class="chart-container">
+    <app-gantt-chart></app-gantt-chart>
+  </section>
+
+  } } }
+</section>
