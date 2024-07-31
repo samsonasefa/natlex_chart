@@ -1,0 +1,160 @@
+@import "./variables.scss";
+
+.w-full {
+  width: 100% !important;
+}
+
+.w-half {
+  width: 50% !important;
+}
+
+.w-25pct {
+  width: 25% !important;
+}
+.w-75pct {
+  width: 75% !important;
+}
+
+.max-w-full {
+  max-width: 100% !important;
+}
+
+.max-w-half {
+  max-width: 50% !important;
+}
+.max-w-25rem {
+  max-width: 25rem !important;
+}
+
+.max-w-25pct {
+  max-width: 25% !important;
+}
+.max-w-75pct {
+  max-width: 75% !important;
+}
+
+.min-w-full {
+  min-width: 100% !important;
+}
+
+.min-w-half {
+  min-width: 50% !important;
+}
+
+.min-w-25pct {
+  min-width: 25% !important;
+}
+.min-w-75pct {
+  min-width: 75% !important;
+}
+
+.m-0-forced {
+  margin: 0 !important;
+}
+
+.w-max-50 {
+  max-width: 50rem;
+}
+
+.w-max-25 {
+  max-width: 25rem;
+}
+
+.w-max-60 {
+  max-width: 60rem;
+}
+
+.w-80rem {
+  width: 80rem;
+}
+.m-auto {
+  margin: auto;
+}
+
+.w-fit-content {
+  width: fit-content !important;
+}
+
+:root {
+  @each $tag, $spacing in $spacings {
+    --spacing-#{$tag}: #{$spacing};
+  }
+}
+
+@each $tag, $spacing in $spacings {
+  .gap-#{$tag} {
+    gap: $spacing;
+  }
+  .w-#{$tag} {
+    width: $spacing;
+  }
+  .p-#{$tag} {
+    padding: $spacing;
+  }
+  .px-#{$tag} {
+    padding-left: $spacing;
+    padding-right: $spacing;
+  }
+  .py-#{$tag} {
+    padding-top: $spacing;
+    padding-bottom: $spacing;
+  }
+  .ps-#{$tag} {
+    padding-inline-start: $spacing;
+  }
+  .pe-#{$tag} {
+    padding-inline-end: $spacing;
+  }
+  .pt-#{$tag} {
+    padding-top: $spacing;
+  }
+  .pr-#{$tag} {
+    padding-right: $spacing;
+  }
+  .pb-#{$tag} {
+    padding-bottom: $spacing;
+  }
+  .pl-#{$tag} {
+    padding-left: $spacing;
+  }
+
+  .m-#{$tag} {
+    margin: $spacing;
+  }
+  .mx-#{$tag} {
+    margin-left: $spacing;
+    margin-right: $spacing;
+  }
+  .my-#{$tag} {
+    margin-top: $spacing;
+    margin-bottom: $spacing;
+  }
+  .my-#{$tag}-forced {
+    margin-top: $spacing !important;
+    margin-bottom: $spacing !important;
+  }
+  .ms-#{$tag} {
+    margin-inline-start: $spacing;
+  }
+  .me-#{$tag} {
+    margin-inline-end: $spacing;
+  }
+  .mt-#{$tag} {
+    margin-top: $spacing;
+  }
+  .mt-#{$tag}-forced {
+    margin-top: $spacing !important;
+  }
+  .mr-#{$tag} {
+    margin-right: $spacing;
+  }
+  .mb-#{$tag} {
+    margin-bottom: $spacing;
+  }
+  .mb-#{$tag}-forced {
+    margin-bottom: $spacing !important;
+  }
+  .ml-#{$tag} {
+    margin-left: $spacing;
+  }
+}

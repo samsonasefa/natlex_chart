@@ -1,1 +1,76 @@
-<p>settings works!</p>
+<section class="wrapper">
+  @for(chart of (chartConfigs | async)!; track chart){
+  <div class="container">
+    <mat-card
+      appearance="outlined"
+      [ngClass]="{
+        hidden: chart.hide
+      }"
+    >
+      <mat-card-header>
+        <div>
+          <mat-card-title>{{ chart.title }}</mat-card-title>
+          <button
+            class="menu-btn"
+            mat-icon-button
+            [matMenuTriggerFor]="editMenu"
+            [matMenuTriggerData]="{ entity: chart }"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        @if(chart.type === 'line'){
+        <mat-icon class="chart-icon w-full">show_chart</mat-icon>
+        }@else if(chart.type === 'candlestick'){
+        <mat-icon class="chart-icon w-full">candlestick_chart</mat-icon>
+        }@else if(chart.type === 'map'){
+        <mat-icon class="chart-icon w-full" svgIcon="map_chart"></mat-icon>
+        }@else if(chart.type === 'gantt'){
+        <mat-icon class="chart-icon w-full" svgIcon="gantt_chart"></mat-icon>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+  }
+  <!-- update the hard code 4 -->
+  @if(((chartConfigs | async)?.length??0) < 4 ){
+  <div class="container">
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <div class="add-placeholder flex-center">
+          <mat-icon (click)="onAdd()" mat-icon-button>add</mat-icon>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  }
+</section>
+
+<!-- menu -->
+<mat-menu #editMenu="matMenu">
+  <ng-template matMenuContent let-entity="entity">
+    <button mat-menu-item (click)="changeVisibility(entity.id, !entity.hide)">
+      @if(entity.hide){
+      <mat-icon>visibility_off</mat-icon>
+      }@else{
+      <mat-icon>visibility</mat-icon>
+      } @if(entity.hide){
+      <span>UnHide</span>
+      }@else{
+      <span>Hide</span>
+      }
+    </button>
+
+    <button mat-menu-item (click)="onEdit(entity)">
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+
+    <button mat-menu-item (click)="onDelete(entity)">
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </ng-template>
+</mat-menu>
