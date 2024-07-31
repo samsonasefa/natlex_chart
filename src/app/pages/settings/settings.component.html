@@ -21,7 +21,15 @@
         </div>
       </mat-card-header>
       <mat-card-content>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...,</p>
+        @if(chart.type === 'line'){
+        <mat-icon class="chart-icon w-full">show_chart</mat-icon>
+        }@else if(chart.type === 'candlestick'){
+        <mat-icon class="chart-icon w-full">candlestick_chart</mat-icon>
+        }@else if(chart.type === 'map'){
+        <mat-icon class="chart-icon w-full" svgIcon="map_chart"></mat-icon>
+        }@else if(chart.type === 'gantt'){
+        <mat-icon class="chart-icon w-full" svgIcon="gantt_chart"></mat-icon>
+        }
       </mat-card-content>
     </mat-card>
   </div>
@@ -55,12 +63,12 @@
       }
     </button>
 
-    <button mat-menu-item (click)="onEdit()">
+    <button mat-menu-item (click)="onEdit(entity)">
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
     </button>
 
-    <button mat-menu-item (click)="onDelete()">
+    <button mat-menu-item (click)="onDelete(entity)">
       <mat-icon>delete</mat-icon>
       <span>Delete</span>
     </button>

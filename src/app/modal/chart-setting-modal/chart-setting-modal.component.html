@@ -1,0 +1,39 @@
+<h3 mat-dialog-title>{{ modalTitle }}</h3>
+<mat-dialog-content>
+  <!--  form modules  -->
+  <div class="py-4 mx-8" [formGroup]="formGroup">
+    <div class="flex gap-2">
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Chart title</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Chart Type</mat-label>
+        <mat-select formControlName="type">
+          @for (item of chartOptions; track $index) {
+          <mat-option [value]="item.value">{{ item.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Description</mat-label>
+        <input matInput formControlName="subTitle" />
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-button
+    mat-flat-button
+    (click)="onSave()"
+    [disabled]="formGroup.invalid || !formGroup.dirty"
+  >
+    {{ data.mode === "add" ? "Save" : "Update" }}
+  </button>
+</mat-dialog-actions>

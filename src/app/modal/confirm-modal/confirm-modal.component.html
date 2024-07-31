@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Warning</h2>
+<mat-dialog-content>
+  <div>
+    Are you sure, did you want to delete
+    <span class="chart-name">{{ data.title }}</span> chart?
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    mat-button
+    color="warn"
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+    mat-flat-button
+  >
+    Delete
+  </button>
+</mat-dialog-actions>

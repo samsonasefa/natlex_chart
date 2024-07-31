@@ -103,3 +103,13 @@ $breakpoints: (
     }
   }
 }
+
+mat-icon {
+  &.chart-icon {
+    height: var(--spacing-32);
+    font-size: var(--spacing-32, 8rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

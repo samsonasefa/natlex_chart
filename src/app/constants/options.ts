@@ -6,10 +6,10 @@ export interface ChartOption {
 }
 
 export const chartOptions: ChartOption[] = [
-  { name: 'LINE_CHART', value: 'line' },
-  { name: 'STOCK_CHART', value: 'candlestick' },
-  { name: 'MAP_CHART', value: 'map' },
-  { name: 'GANTT_CHART', value: 'gantt' },
+  { name: 'Line chart', value: 'line' },
+  { name: 'Stock chart', value: 'candlestick' },
+  { name: 'Map chart', value: 'map' },
+  { name: 'Gantt chart', value: 'gantt' },
 ];
 
 export const options = {
