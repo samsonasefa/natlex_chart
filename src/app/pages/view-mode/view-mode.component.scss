@@ -1,0 +1,83 @@
+$breakpoints: (
+  // mobiles
+  "mb":
+    (
+      "min": 0px,
+      "max": 600px,
+    ),
+  // tabs and large mobiles
+  "tb":
+    (
+      "min": 601px,
+      "max": 1024px,
+    ),
+  // normal laptop screens
+  "sm":
+    (
+      "min": 1025px,
+      "max": 1280px,
+    ),
+  // large screens laptop and desktop screens
+  "lg":
+    (
+      "min": 1281px,
+      "max": 1600px,
+    ),
+  // very large screens
+  "xl":
+    (
+      "min": 1601px,
+      "max": 999999999px,
+    )
+) !default;
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $min-width: map-get(map-get($breakpoints, $breakpoint), "min");
+    $max-width: map-get(map-get($breakpoints, $breakpoint), "max");
+    @media (min-width: #{$min-width}) and (max-width: #{$max-width}) {
+      @content;
+    }
+  }
+}
+
+.charts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+
+  @include respond-to("mb") {
+    align-items: flex-start;
+    overflow: auto;
+    .chart-container {
+      width: 700px;
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+  }
+  @include respond-to("tb") {
+    .chart-container {
+      width: 95%;
+    }
+  }
+  @include respond-to("sm") {
+    .chart-container {
+      width: 90%;
+    }
+  }
+  @include respond-to("lg") {
+    .chart-container {
+      width: 100%;
+      max-width: 75rem;
+    }
+  }
+  @include respond-to("xl") {
+    .chart-container {
+      width: 100%;
+      max-width: 80rem;
+    }
+  }
+}
