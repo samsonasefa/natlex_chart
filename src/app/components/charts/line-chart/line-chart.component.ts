@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { DataService } from './data.service';
 import { HighchartsChartModule } from 'highcharts-angular';
@@ -12,28 +12,41 @@ import { HighchartsChartModule } from 'highcharts-angular';
 })
 export class LineChartComponent {
   Highcharts: typeof Highcharts = Highcharts;
-  chartOptions: Highcharts.Options;
+  chartOptions!: Highcharts.Options;
 
-  constructor(public dataService: DataService) {
+  @Input() startDate?: Date | null;
+  @Input() endDate?: Date | null;
+
+  updateFromInput: boolean = false;
+
+  constructor(public dataService: DataService) {}
+
+  xAxisMonths = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  maxTempData = [-8.26, -5.0, 1.05, 4.08, 15.4, 21.06, 21.46];
+
+  minTempData = [-14.63, -9.56, -4.4, -2.81, 6.86, 14.41, 15.75];
+
+  ngOnInit() {
     this.chartOptions = {
       title: { text: 'Highcharts chart' },
       xAxis: [
         {
           title: { text: 'Months of 2024' },
-          categories: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec',
-          ],
+          categories: this.xAxisMonths,
         },
       ],
       yAxis: [
@@ -45,15 +58,59 @@ export class LineChartComponent {
         {
           type: 'line',
           name: 'Max temp',
-          data: [-8.26, -5.0, 1.05, 4.08, 15.4, 21.06, 21.46],
+          data: this.maxTempData,
         },
         {
           type: 'line',
           color: 'red',
           name: 'Min temp',
-          data: [-14.63, -9.56, -4.4, -2.81, 6.86, 14.41, 15.75],
+          data: this.minTempData,
         },
       ],
     };
+  }
+
+  // when the input startDate and endDate get changed, update chart data will be triggered
+  ngOnChanges(changes: SimpleChanges): void {
+    const startDateChanges = changes?.['startDate'] ?? true;
+    const endDateChanges = changes?.['endDate'] ?? true;
+
+    if (startDateChanges && endDateChanges) {
+      const startMonth = this.startDate?.getMonth();
+      const endMonth = this.endDate?.getMonth();
+
+      this.updateFromInput = !this.updateFromInput;
+
+      if (this.chartOptions) {
+        this.chartOptions.series = [
+          {
+            type: 'line',
+            name: `Max temp ${this.xAxisMonths[startMonth ?? 0]} - ${
+              this.xAxisMonths[endMonth ?? 0]
+            }`,
+            data: this.maxTempData.slice(startMonth, endMonth),
+          },
+          {
+            type: 'line',
+            color: 'red',
+            name: `Min temp ${this.xAxisMonths[startMonth ?? 0]} - ${
+              this.xAxisMonths[endMonth ?? 0]
+            }`,
+            data: this.minTempData.slice(startMonth, endMonth),
+          },
+        ];
+
+        this.chartOptions.xAxis = [
+          {
+            title: {
+              text: `${this.xAxisMonths[startMonth ?? 0]} - ${
+                this.xAxisMonths[endMonth ?? 0]
+              }`,
+            },
+            categories: this.xAxisMonths.slice(startMonth, endMonth),
+          },
+        ];
+      }
+    }
   }
 }
