@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { HighchartsChartModule } from 'highcharts-angular';
 import * as Highcharts from 'highcharts/highstock';
 
@@ -17,10 +17,16 @@ IndicatorZigzag(Highcharts);
 })
 export class StockChartComponent {
   Highcharts: typeof Highcharts = Highcharts;
+  chartOptions!: Highcharts.Options;
 
-  chartOptions: Highcharts.Options;
+  updateFlag = false;
 
-  constructor(public dataService: DataService) {
+  @Input() startDate?: Date | null;
+  @Input() endDate?: Date | null;
+
+  constructor(public dataService: DataService) {}
+
+  ngOnInit() {
     this.chartOptions = {
       title: { text: 'chart' },
       xAxis: {
@@ -36,5 +42,22 @@ export class StockChartComponent {
         },
       ],
     };
+  }
+
+  // when the input startDate and endDate get changed, update chart data will be triggered
+  ngOnChanges(changes: SimpleChanges): void {
+    const startDateChanges = changes?.['startDate'] ?? true;
+    const endDateChanges = changes?.['endDate'] ?? true;
+
+    if (startDateChanges && endDateChanges) {
+      this.updateFlag = true;
+
+      if (this.chartOptions) {
+        this.chartOptions.xAxis = {
+          min: this.startDate?.getTime(),
+          max: this.endDate?.getTime(),
+        };
+      }
+    }
   }
 }

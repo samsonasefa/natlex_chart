@@ -1,15 +1,43 @@
 <section class="charts">
-  @for (chart of (chartConfigs | async)!; track chart) { @switch (chart.type) {
+  @if(((chartConfigs | async)?.length??0)>0){
+  <mat-form-field class="align-self-flex-end mt-8 mr-8" appearance="outline">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input
+      [min]="minDate"
+      [max]="maxDate"
+      [formGroup]="range"
+      [rangePicker]="picker"
+    >
+      <input matStartDate formControlName="start" placeholder="Start date" />
+      <input matEndDate formControlName="end" placeholder="End date" />
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+
+    @if (range.controls.start.errors) {
+    <mat-error>Invalid start date</mat-error>
+    } @if (range.controls.end.errors) {
+    <mat-error>Invalid end date</mat-error>
+    }
+  </mat-form-field>
+  } @for (chart of chartConfigs | async; track chart) { @switch (chart.type) {
   @case ('line') {
 
   <section class="chart-container">
-    <app-line-chart></app-line-chart>
+    <app-line-chart
+      [startDate]="range.value.start"
+      [endDate]="range.value.end"
+    ></app-line-chart>
   </section>
 
   } @case ("candlestick") {
 
   <section class="chart-container">
-    <app-stock-chart></app-stock-chart>
+    <app-stock-chart
+      [startDate]="range.value.start"
+      [endDate]="range.value.end"
+    ></app-stock-chart>
   </section>
 
   } @case ("map") {
