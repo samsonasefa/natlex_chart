@@ -34,7 +34,10 @@
   } @case ("candlestick") {
 
   <section class="chart-container">
-    <app-stock-chart></app-stock-chart>
+    <app-stock-chart
+      [startDate]="range.value.start"
+      [endDate]="range.value.end"
+    ></app-stock-chart>
   </section>
 
   } @case ("map") {
