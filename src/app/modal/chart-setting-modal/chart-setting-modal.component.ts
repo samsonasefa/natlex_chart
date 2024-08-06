@@ -9,7 +9,7 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { ChartType, options } from '../../constants/options';
+import { ChartOption, ChartType, options } from '../../constants/options';
 import {
   FormControl,
   FormGroup,
@@ -20,6 +20,7 @@ import {
 
 export interface ChartSettingForm {
   mode: 'edit' | 'add';
+  existedCharts: ChartType[];
   title?: string;
   type?: ChartType;
   subtitle?: string;
@@ -89,5 +90,12 @@ export class ChartSettingModalComponent {
    */
   onSave() {
     this.dialogRef.close({ ...this.formGroup.value });
+  }
+
+  /**
+   * Check if the chart type is exist to avoid duplicated charts
+   */
+  IsChartTypeExist(item: ChartOption): boolean {
+    return this.data.existedCharts.includes(item.value);
   }
 }

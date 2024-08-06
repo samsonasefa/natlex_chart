@@ -13,6 +13,7 @@ import { ChartSettingModalService } from '../../modal/chart-setting-modal/chart-
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmModalComponent } from '../../modal/confirm-modal/confirm-modal.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ChartType } from '../../constants/options';
 
 @Component({
   selector: 'app-settings',
@@ -59,22 +60,31 @@ export class SettingsComponent {
    * A function to trigger add chart
    */
   onAdd(): void {
-    this.chartModalSvc.open({ mode: 'add' }).subscribe(async (data) => {
-      console.log(' the data ', data);
-      // todo validate if the exact chart is exist
-      if (data?.title && data?.type) {
-        this.store.dispatch(
-          ChartsActions.addChart({
-            chart: {
-              id: `${new Date().getTime()}`,
-              title: data.title,
-              type: data.type,
-              hide: false,
-            },
-          })
-        );
-      }
+    // get the list of existed chart type
+    let chartTypes: ChartType[] = [];
+    this.chartConfigs.subscribe((charts) => {
+      chartTypes = charts.map((chart) => chart.type);
     });
+
+    // list of type of loaded chart
+    this.chartModalSvc
+      .open({ mode: 'add', existedCharts: chartTypes })
+      .subscribe(async (data) => {
+        console.log(' the data ', data);
+        // todo validate if the exact chart is exist
+        if (data?.title && data?.type) {
+          this.store.dispatch(
+            ChartsActions.addChart({
+              chart: {
+                id: `${new Date().getTime()}`,
+                title: data.title,
+                type: data.type,
+                hide: false,
+              },
+            })
+          );
+        }
+      });
   }
 
   /**
@@ -90,8 +100,14 @@ export class SettingsComponent {
    * A function to trigger edit chart
    */
   onEdit(chart: Chart): void {
+    // get the list of existed chart type
+    let chartTypes: ChartType[] = [];
+    this.chartConfigs.subscribe((charts) => {
+      chartTypes = charts.map((chart) => chart.type);
+    });
+
     this.chartModalSvc
-      .open({ mode: 'edit', ...chart })
+      .open({ mode: 'edit', existedCharts: chartTypes, ...chart })
       .subscribe(async (data) => {
         console.log(' the data -> ', data);
         // todo validate if the exact chart is exist

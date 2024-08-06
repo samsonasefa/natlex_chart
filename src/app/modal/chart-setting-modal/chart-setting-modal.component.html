@@ -12,7 +12,11 @@
         <mat-label>Chart Type</mat-label>
         <mat-select formControlName="type">
           @for (item of chartOptions; track $index) {
-          <mat-option [value]="item.value">{{ item.name }}</mat-option>
+          <mat-option
+            [disabled]="IsChartTypeExist(item)"
+            [value]="item.value"
+            >{{ item.name }}</mat-option
+          >
           }
         </mat-select>
       </mat-form-field>
