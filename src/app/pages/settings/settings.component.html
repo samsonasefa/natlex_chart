@@ -51,7 +51,7 @@
 <!-- menu -->
 <mat-menu #editMenu="matMenu">
   <ng-template matMenuContent let-entity="entity">
-    <button mat-menu-item (click)="changeVisibility(entity.id, !entity.hide)">
+    <button mat-menu-item (click)="changeVisibility(entity, !entity.hide)">
       @if(entity.hide){
       <mat-icon>visibility_off</mat-icon>
       }@else{

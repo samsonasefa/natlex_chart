@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LineChartComponent } from '../../components/charts/line-chart/line-chart.component';
 import { Store } from '@ngrx/store';
-import { selectCharts } from '../../state/charts.selectors';
+import { selectVisibleCharts } from '../../state/charts.selectors';
 import { Chart } from '../../model/chart.model';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-view-mode',
@@ -35,6 +36,7 @@ import {
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
   templateUrl: './view-mode.component.html',
   styleUrl: './view-mode.component.scss',
@@ -44,7 +46,7 @@ import {
 export class ViewModeComponent {
   chartConfigs: Observable<readonly Chart[]>;
   constructor(private store: Store) {
-    this.chartConfigs = this.store.select(selectCharts);
+    this.chartConfigs = this.store.select(selectVisibleCharts);
   }
 
   readonly minDate = new Date(2024, 0, 1); // set the minimum date to be Jan 01, 2024
