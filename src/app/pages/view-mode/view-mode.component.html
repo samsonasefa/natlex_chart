@@ -21,6 +21,14 @@
     <mat-error>Invalid end date</mat-error>
     }
   </mat-form-field>
+  } @else {
+  <section
+    class="m-20 no-chart flex justify-center flex-direction-column align-items-center gap-1 text-center"
+  >
+    <img src="assets/svg/no-data.svg" />
+    <p>📈 Oops! It looks like you don't have any charts yet.</p>
+    <a [routerLink]="['/', 'settings']">Create here! 🚀</a>
+  </section>
   } @for (chart of chartConfigs | async; track chart) { @switch (chart.type) {
   @case ('line') {
 

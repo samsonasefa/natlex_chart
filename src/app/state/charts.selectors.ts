@@ -1,4 +1,4 @@
-import { createFeatureSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Chart } from '../model/chart.model';
 
 /**
@@ -6,3 +6,7 @@ import { Chart } from '../model/chart.model';
  */
 export const selectCharts =
   createFeatureSelector<ReadonlyArray<Chart>>('charts');
+
+export const selectVisibleCharts = createSelector(selectCharts, (charts) => {
+  return charts.filter((chart) => !chart.hide);
+});
