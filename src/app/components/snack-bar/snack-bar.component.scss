@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+}
+
+mat-icon {
+  margin: 0 !important;
+}
+
+.info {
+  color: var(--mat-snack-bar-button-color);
+}
+.warn {
+  color: coral;
+}

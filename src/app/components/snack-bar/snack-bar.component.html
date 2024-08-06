@@ -1,0 +1,24 @@
+<span
+  [ngClass]="{
+    info: data.severity === 'info',
+    warn: data.severity === 'warn',
+}"
+  matSnackBarLabel
+>
+  {{ data.message }}
+</span>
+<span matSnackBarActions>
+  <button
+    mat-button
+    matSnackBarAction
+    (click)="snackBarRef.dismissWithAction()"
+  >
+    <mat-icon
+      [ngClass]="{
+        info: data.severity === 'info',
+        warn: data.severity === 'warn',
+    }"
+      >close</mat-icon
+    >
+  </button>
+</span>
