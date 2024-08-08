@@ -35,3 +35,13 @@ $spacings: (
 
 // color
 $bgcolor: #f6f8fc;
+$cardTitleColor: #004995;
+$chartIconColor: #4c8ccf;
+$toolBarBb: #d7e3ff;
+$navActiveLinkColor: #005cbb1a;
+:root {
+  --card-title-color: #{$cardTitleColor};
+  --chart-icon-color: #{$chartIconColor};
+  --toolbar-bg-color: #{$toolBarBb};
+  --nav-active-link-color: #{$navActiveLinkColor};
+}

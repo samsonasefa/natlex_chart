@@ -9,3 +9,16 @@
     }
   }
 }
+
+.menu-content {
+  background: var(--toolbar-bg-color) !important;
+  width: 100%;
+  max-width: 100% !important;
+}
+
+.menu-overlay {
+  position: fixed !important;
+  top: var(--mat-toolbar-mobile-height) !important;
+  right: 0 !important;
+  left: 0 !important;
+}
