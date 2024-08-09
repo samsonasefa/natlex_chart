@@ -49,6 +49,12 @@ $breakpoints: (
 
   .container {
     width: 12rem;
+    mat-card {
+      color: var(--card-title-color);
+      &.hidden * {
+        color: gray !important;
+      }
+    }
     & .menu-btn {
       position: absolute;
       top: 5px;
@@ -58,13 +64,16 @@ $breakpoints: (
     }
   }
 
-  .hidden {
-    color: gray;
-  }
-
   .add-placeholder {
     border: 1px gray dashed;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    min-height: var(--spacing-36);
+    margin-top: var(--spacing-1-5);
+    margin-bottom: var(--spacing-1-5);
     mat-icon {
+      margin: 0;
       width: var(--spacing-16);
       height: var(--spacing-16);
       font-size: var(--spacing-16, 4rem);
@@ -87,24 +96,15 @@ $breakpoints: (
   }
   @include respond-to("sm") {
     gap: var(--spacing-4);
-    .container {
-      width: 10rem;
-      color: lightgreen;
-    }
   }
   @include respond-to("lg") {
-    .container {
-      color: coral;
-    }
   }
   @include respond-to("xl") {
-    .container {
-      color: dodgerblue;
-    }
   }
 }
 
 mat-icon {
+  color: var(--chart-icon-color);
   &.chart-icon {
     height: var(--spacing-32);
     font-size: var(--spacing-32, 8rem);

@@ -1,36 +1,35 @@
-.spacer {
-  flex: 1 1 auto;
-}
+mat-toolbar {
+  background: var(--toolbar-bg-color);
 
-nav {
-  a {
-    // color: black;
-    text-decoration: none;
-    margin-right: 10px;
+  .spacer {
+    flex: 1 1 auto;
   }
-}
 
-.menu-toggle {
-  display: none;
-}
-
-@media screen and (max-width: 768px) {
   nav {
-    display: none;
-  }
-  nav.isCollapsed {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    top: var(--mat-toolbar-mobile-height);
-    right: 0;
-    background: var(--mat-toolbar-container-background-color);
-    width: 100%;
-    & a {
-      margin-left: 30px;
+    a {
+      :hover {
+        background: var(--nav-active-link-color);
+      }
+      &.router-link-active {
+        background: var(--nav-active-link-color);
+      }
     }
   }
+
   .menu-toggle {
-    display: block;
+    display: none;
   }
+
+  @media screen and (max-width: 768px) {
+    nav {
+      display: none;
+    }
+    .menu-toggle {
+      display: block;
+    }
+  }
+}
+.menu-nav {
+  width: 100%;
+  border-radius: 0px;
 }

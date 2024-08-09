@@ -1,4 +1,5 @@
 <section class="charts">
+  <!-- Start date range picker -->
   @if(((chartConfigs | async)?.length??0)>0){
   <mat-form-field class="align-self-flex-end mt-8 mr-8" appearance="outline">
     <mat-label>Enter a date range</mat-label>
@@ -21,7 +22,11 @@
     <mat-error>Invalid end date</mat-error>
     }
   </mat-form-field>
-  } @else {
+  }
+  <!-- End date range picker -->
+
+  <!-- Start empty placeholder -->
+  @else {
   <section
     class="m-20 no-chart flex justify-center flex-direction-column align-items-center gap-1 text-center"
   >
@@ -29,36 +34,18 @@
     <p>📈 Oops! It looks like you don't have any charts yet.</p>
     <a [routerLink]="['/', 'settings']">Create here! 🚀</a>
   </section>
-  } @for (chart of chartConfigs | async; track chart) { @switch (chart.type) {
-  @case ('line') {
+  }
+  <!-- End empty placeholder -->
 
+  <!-- Start charts list -->
+
+  @for (chart of chartConfigs | async; track chart) {
   <section class="chart-container">
-    <app-line-chart
-      [startDate]="range.value.start"
-      [endDate]="range.value.end"
-    ></app-line-chart>
+    <app-generic-chart
+      [startDate]="range.value.start || undefined"
+      [endDate]="range.value.end || undefined"
+      [chartType]="chart.type"
+    ></app-generic-chart>
   </section>
-
-  } @case ("candlestick") {
-
-  <section class="chart-container">
-    <app-stock-chart
-      [startDate]="range.value.start"
-      [endDate]="range.value.end"
-    ></app-stock-chart>
-  </section>
-
-  } @case ("map") {
-
-  <section class="chart-container">
-    <app-map-chart></app-map-chart>
-  </section>
-
-  } @case ("gantt") {
-
-  <section class="chart-container">
-    <app-gantt-chart></app-gantt-chart>
-  </section>
-
-  } } }
+  }
 </section>
