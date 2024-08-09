@@ -5,12 +5,12 @@
     <div class="flex gap-2">
       <mat-form-field class="w-full" appearance="outline">
         <mat-label>Chart title</mat-label>
-        <input matInput formControlName="title" />
+        <input matInput required formControlName="title" />
       </mat-form-field>
 
       <mat-form-field class="w-full" appearance="outline">
         <mat-label>Chart Type</mat-label>
-        <mat-select formControlName="type">
+        <mat-select required formControlName="type">
           @for (item of chartOptions; track $index) {
           <mat-option
             [disabled]="IsChartTypeExist(item)"
@@ -24,8 +24,26 @@
     <div>
       <mat-form-field class="w-full" appearance="outline">
         <mat-label>Description</mat-label>
-        <input matInput formControlName="subTitle" />
+        <input matInput formControlName="description" />
       </mat-form-field>
+    </div>
+
+    <div class="flex gap-2">
+      <mat-form-field class="w-half" appearance="outline">
+        <mat-label>Color</mat-label>
+        <input matInput formControlName="color" type="color" />
+      </mat-form-field>
+
+      @if(formGroup.value.type === 'line'){
+      <mat-form-field class="w-half" appearance="outline">
+        <mat-label>Chart Family</mat-label>
+        <mat-select formControlName="chartFamilyType">
+          @for (lineChart of lineChartFamily; track lineChart) {
+          <mat-option [value]="lineChart">{{ lineChart }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      }
     </div>
   </div>
 </mat-dialog-content>
