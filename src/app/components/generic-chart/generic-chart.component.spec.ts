@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapChartComponent } from './map-chart.component';
+import { GenericChartComponent } from './generic-chart.component';
 
-describe('MapChartComponent', () => {
-  let component: MapChartComponent;
-  let fixture: ComponentFixture<MapChartComponent>;
+describe('GenericChartComponent', () => {
+  let component: GenericChartComponent;
+  let fixture: ComponentFixture<GenericChartComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MapChartComponent]
+      imports: [GenericChartComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MapChartComponent);
+    fixture = TestBed.createComponent(GenericChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

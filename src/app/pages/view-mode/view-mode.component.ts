@@ -1,13 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LineChartComponent } from '../../components/charts/line-chart/line-chart.component';
 import { Store } from '@ngrx/store';
 import { selectVisibleCharts } from '../../state/charts.selectors';
 import { Chart } from '../../model/chart.model';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { StockChartComponent } from '../../components/charts/stock-chart/stock-chart.component';
-import { MapChartComponent } from '../../components/charts/map-chart/map-chart.component';
-import { GanttChartComponent } from '../../components/charts/gantt-chart/gantt-chart.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -20,15 +16,12 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { GenericChartComponent } from '../../components/generic-chart/generic-chart.component';
 
 @Component({
   selector: 'app-view-mode',
   standalone: true,
   imports: [
-    LineChartComponent,
-    StockChartComponent,
-    MapChartComponent,
-    GanttChartComponent,
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
@@ -37,6 +30,7 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    GenericChartComponent,
   ],
   templateUrl: './view-mode.component.html',
   styleUrl: './view-mode.component.scss',

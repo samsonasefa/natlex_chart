@@ -1,8 +1,9 @@
 <article>
   <highcharts-chart
     [Highcharts]="Highcharts"
+    [constructorType]="chartConstructor"
     [options]="chartOptions"
-    [(update)]="updateFromInput"
+    [(update)]="updateFlag"
   >
   </highcharts-chart>
 </article>
