@@ -54,6 +54,13 @@ $breakpoints: (
       &.hidden * {
         color: gray !important;
       }
+
+      & mat-card-header {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
     }
     & .menu-btn {
       position: absolute;

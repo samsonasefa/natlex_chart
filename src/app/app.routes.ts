@@ -3,11 +3,8 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./pages/view-mode/view-mode.component').then(
-        (e) => e.ViewModeComponent
-      ),
-    title: 'Natlex - charts',
+    redirectTo: '/view-mode',
+    pathMatch: 'full',
   },
   {
     path: 'view-mode',

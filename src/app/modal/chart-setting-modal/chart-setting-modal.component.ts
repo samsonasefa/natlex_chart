@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -17,13 +17,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 export interface ChartSettingForm {
   mode: 'edit' | 'add';
   existedCharts: ChartType[];
   title?: string;
   type?: ChartType;
-  subtitle?: string;
+  description?: string;
+  color?: string;
+  chartFamilyType?: string;
 }
 
 @Component({
@@ -41,11 +44,22 @@ export interface ChartSettingForm {
   templateUrl: './chart-setting-modal.component.html',
   styleUrl: './chart-setting-modal.component.scss',
 })
-export class ChartSettingModalComponent {
+export class ChartSettingModalComponent implements OnInit {
   readonly chartOptions = options.chartOptions;
   readonly modalTitle =
     this.data.mode === 'add' ? 'Add new chart' : 'Modify chart property';
   public formGroup!: FormGroup;
+
+  private subscription!: Subscription;
+
+  lineChartFamily = [
+    'line',
+    'spline',
+    'area',
+    'column',
+    'scatter',
+    'arearange',
+  ];
 
   constructor(
     public dialogRef: MatDialogRef<ChartSettingModalComponent>,
@@ -56,7 +70,19 @@ export class ChartSettingModalComponent {
     this.buildForm({
       title: this.data.title ?? undefined,
       type: this.data.type ?? undefined,
-      subTitle: this.data.subtitle ?? undefined,
+      description: this.data.description ?? undefined,
+      color: this.data.color ?? undefined,
+      chartFamilyType: this.data.chartFamilyType ?? undefined,
+    });
+
+    const type = this.formGroup.controls?.['type'];
+    const chartFamilyType = this.formGroup.controls?.['chartFamilyType'];
+
+    this.subscription = type.valueChanges.subscribe((e) => {
+      // console.log('the chge valie ', );
+      if (e !== 'line') {
+        chartFamilyType.setValue('');
+      }
     });
   }
 
@@ -74,7 +100,9 @@ export class ChartSettingModalComponent {
         initialData?.['type'] ?? '',
         Validators.compose([Validators.required])
       ),
-      subTitle: new FormControl(initialData?.['subTitle'] ?? ''),
+      chartFamilyType: new FormControl(initialData?.['chartFamilyType'] ?? ''),
+      description: new FormControl(initialData?.['description'] ?? ''),
+      color: new FormControl(initialData?.['color'] ?? '#4c8ccf'),
     });
   }
 

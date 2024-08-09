@@ -83,6 +83,9 @@ export class SettingsComponent {
                 title: data.title,
                 type: data.type,
                 hide: false,
+                description: data?.description,
+                color: data?.color,
+                chartFamilyType: data?.chartFamilyType,
               },
             })
           );
@@ -128,6 +131,9 @@ export class SettingsComponent {
                 title: data.title,
                 type: data.type,
                 hide: false,
+                description: data?.description,
+                color: data?.color,
+                chartFamilyType: data?.chartFamilyType,
               },
             })
           );

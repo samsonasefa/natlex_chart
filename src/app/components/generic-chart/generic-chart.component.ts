@@ -11,6 +11,7 @@ import IndicatorsCore from 'highcharts/indicators/indicators';
 IndicatorsCore(HighchartsStock);
 
 import { DataService } from './data.service';
+import { Chart } from '../../model/chart.model';
 
 @Component({
   selector: 'app-generic-chart',
@@ -21,7 +22,7 @@ import { DataService } from './data.service';
 })
 export class GenericChartComponent {
   @Input() chartOptions: Highcharts.Options = {};
-  @Input() chartType!: string;
+  @Input() chartData!: Chart;
 
   updateFlag = false;
 
@@ -48,31 +49,41 @@ export class GenericChartComponent {
       this.updateFlag = true;
     }
 
-    switch (this.chartType) {
+    switch (this.chartData.type) {
       case 'candlestick':
         this.Highcharts = HighchartsStock;
         this.chartConstructor = 'stockChart';
         this.chartOptions = this.defaultStockChartOptions(
           this.startDate,
-          this.endDate
+          this.endDate,
+          this.chartData
         );
         break;
       case 'map':
         this.Highcharts = HighchartsMap;
         this.chartConstructor = 'mapChart';
-        this.chartOptions = this.defaultMapChartOptions();
+        this.chartOptions = this.defaultMapChartOptions(
+          this.startDate,
+          this.endDate,
+          this.chartData
+        );
         break;
       case 'gantt':
         this.Highcharts = HighchartsGantt;
         this.chartConstructor = 'ganttChart';
-        this.chartOptions = this.defaultGanttChartOptions();
+        this.chartOptions = this.defaultGanttChartOptions(
+          this.startDate,
+          this.endDate,
+          this.chartData
+        );
         break;
       default:
         this.Highcharts = Highcharts;
         this.chartConstructor = 'chart';
         this.chartOptions = this.defaultLineChartOptions(
           this.startDate,
-          this.endDate
+          this.endDate,
+          this.chartData
         );
         break;
     }
@@ -80,10 +91,11 @@ export class GenericChartComponent {
 
   private defaultLineChartOptions(
     startDate?: Date,
-    endDate?: Date
+    endDate?: Date,
+    chartData?: Chart
   ): Highcharts.Options {
     return {
-      title: { text: 'Highcharts chart' },
+      title: { text: chartData?.title ?? 'Line chart' },
       xAxis: [
         {
           title: { text: 'Months of 2024' },
@@ -100,23 +112,28 @@ export class GenericChartComponent {
           type: 'line',
           name: 'Max temp',
           data: this.dataService.getMaxTempData(startDate, endDate),
-        },
-        {
-          type: 'line',
-          color: 'red',
-          name: 'Min temp',
-          data: this.dataService.getMinTempData(startDate, endDate),
+          ...(chartData?.chartFamilyType && {
+            type: chartData.chartFamilyType as any,
+          }),
+          ...(chartData?.color && { color: chartData?.color }),
         },
       ],
+      // set chart description
+      ...(chartData?.description && {
+        subtitle: {
+          text: chartData?.description,
+        },
+      }),
     };
   }
 
   private defaultStockChartOptions(
     startDate?: Date,
-    endDate?: Date
+    endDate?: Date,
+    chartData?: Chart
   ): Highcharts.Options {
     return {
-      title: { text: 'Candlestick chart' },
+      title: { text: chartData?.title ?? 'Candlestick chart' },
       xAxis: {
         type: 'datetime',
         min: startDate ? startDate.getTime() : Date.UTC(2024, 0, 1),
@@ -127,15 +144,30 @@ export class GenericChartComponent {
           type: 'candlestick',
           pointInterval: 24 * 3600 * 1000,
           data: this.dataService.getStockChartData(),
+          ...(chartData?.color && { color: chartData?.color }),
         },
       ],
+      // set chart description
+      ...(chartData?.description && {
+        subtitle: {
+          text: chartData?.description,
+        },
+      }),
     };
   }
 
-  private defaultGanttChartOptions(): Highcharts.Options {
+  private defaultGanttChartOptions(
+    startDate?: Date,
+    endDate?: Date,
+    chartData?: Chart
+  ): Highcharts.Options {
     const today = new Date();
     const day = 1000 * 60 * 60 * 24;
     return {
+      title: {
+        text: chartData?.title ?? 'Gantt chart',
+      },
+
       lang: {
         accessibility: {
           axis: {
@@ -146,9 +178,6 @@ export class GenericChartComponent {
         },
       },
 
-      title: {
-        text: 'Gantt Chart with Progress Indicators',
-      },
       xAxis: {
         min: today.getTime() - 2 * day,
         max: today.getTime() + 32 * day,
@@ -228,13 +257,17 @@ export class GenericChartComponent {
     };
   }
 
-  private defaultMapChartOptions(): Highcharts.Options {
+  private defaultMapChartOptions(
+    startDate?: Date,
+    endDate?: Date,
+    chartData?: Chart
+  ): Highcharts.Options {
     return {
       chart: {
         map: worldMap,
       },
       title: {
-        text: 'Highcharts Maps - basic demo',
+        text: chartData?.title ?? 'Map chart',
       },
       mapNavigation: {
         enabled: true,
@@ -253,7 +286,7 @@ export class GenericChartComponent {
           name: 'Random data',
           states: {
             hover: {
-              color: '#BADA55',
+              ...(chartData?.color && { color: chartData?.color }),
             },
           },
           dataLabels: {
